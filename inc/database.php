@@ -12,3 +12,4 @@ $connDB = mysqli_select_db($conn,'intellitech');
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
+?>

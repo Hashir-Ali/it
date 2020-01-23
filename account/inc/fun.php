@@ -623,7 +623,7 @@ function View_All_User() {
         $Subscribe = mysqli_real_escape_string($conn, $_GET['sub']);
 
         $subscribe_role = "UPDATE users SET role = 'Subscriber' WHERE id = $Subscribe ";
-        $subscribe = mysqli_query($conn, $subscribe_role);
+        $subscri = mysqli_query($conn, $subscribe_role);
 
         $_SESSION['ErrorMessage'] = "User as Been Change to Subscribe";
         Redirect("viewusers");
@@ -758,18 +758,6 @@ function Username_exist($username) {
     }
 }
 
-function Email_exist($email) {
-    global $conn;
-    $Query = "SELECT email FROM users WHERE email = '$email' ";
-    $Exist = mysqli_query($conn, $Query);
-
-    if (mysqli_num_rows($Exist) > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function Reg_User() {
     global $conn;
     if (isset($_POST['reguser'])) {
@@ -779,6 +767,7 @@ function Reg_User() {
         $password = mysqli_real_escape_string($conn, trim($_POST['password']));
         $email = mysqli_real_escape_string($conn, trim($_POST['email']));
         $role = "Subscriber";
+
 
         if (Username_exist($username)) {
             $_SESSION['ErrorMessage'] = "Username Already Existing";
@@ -799,7 +788,7 @@ function Reg_User() {
                     $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 
                     $Query = "INSERT INTO users(firstname, lastname, username, password, email, date, role)
-                    VALUE('$firstname', '$lastname', '$username', '$password', '$email', now(), '$role')";
+          VALUE('$firstname', '$lastname', '$username', '$password', '$email', now(), '$role')";
 
                     $user_reg = mysqli_query($conn, $Query);
                     $_SESSION['SuccessMessage'] = "Registration Successfully";
@@ -845,12 +834,23 @@ function is_admin($user) {
     }
 }
 
-function Email_exist_intern($email_intern) {
+function Email_exist($email) {
     global $conn;
-    $Query = "SELECT email FROM intern WHERE email = '$email_intern' ";
-    $Intern = mysqli_query($conn, $Query);
+    $Query = "SELECT email FROM intern WHERE email = '$email' ";
+    $Exist = mysqli_query($conn, $Query);
 
-    if (mysqli_num_rows($Intern) > 0) {
+    if (mysqli_num_rows($Exist)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function Email_exist_intern($conn, $email) {
+    $Query = "SELECT id FROM users WHERE email = '$email' ";
+    $Exist = mysqli_query($conn, $Query);
+
+    if (mysqli_num_rows($Exist) == 1) {
         return true;
     } else {
         return false;
@@ -863,301 +863,34 @@ function validate_intern($conn) {
     $max = 20;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $firstname = mysqli_real_escape_string($conn, trim(ucfirst($_POST['firstName'])));
-        $lastname = mysqli_real_escape_string($conn, trim(ucfirst($_POST['lastName'])));
+        $firstname = mysqli_real_escape_string($conn, trim($_POST['firstName']));
+        $lastname = mysqli_real_escape_string($conn, trim($_POST['lastName']));
         $track = mysqli_real_escape_string($conn, trim($_POST['track']));
         $level = mysqli_real_escape_string($conn, trim($_POST['level']));
-        $email_intern = mysqli_real_escape_string($conn, trim($_POST['email']));
-        date_default_timezone_set("Africa/Lagos");
-        $date = date("h:i:s a m/d/Y");
-        $forward = '<body>
-        <head>
-        <title></title>
-        <!--[if !mso]><!-- -->
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!--<![endif]-->
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style type="text/css">
-            #outlook a {
-                padding: 0;
-            }
-            
-            .ReadMsgBody {
-                width: 100%;
-            }
-            
-            .ExternalClass {
-                width: 100%;
-            }
-            
-            .ExternalClass * {
-                line-height: 100%;
-            }
-            
-            body {
-                margin: 0;
-                padding: 0;
-                -webkit-text-size-adjust: 100%;
-                -ms-text-size-adjust: 100%;
-            }
-            
-            table,
-            td {
-                border-collapse: collapse;
-                mso-table-lspace: 0pt;
-                mso-table-rspace: 0pt;
-            }
-            
-            img {
-                border: 0;
-                height: auto;
-                line-height: 100%;
-                outline: none;
-                text-decoration: none;
-                -ms-interpolation-mode: bicubic;
-            }
-            
-            p {
-                display: block;
-                margin: 13px 0;
-            }
-        </style>
-        <!--[if !mso]><!-->
-        <style type="text/css">
-            @media only screen and (max-width:480px) {
-                @-ms-viewport {
-                    width: 320px;
-                }
-                @viewport {
-                    width: 320px;
-                }
-            }
-        </style>
-        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,700" rel="stylesheet" type="text/css">
-        <style type="text/css">
-            @import url(https://fonts.googleapis.com/css?family=Lato:300,400,500,700);
-        </style>
-        <!--<![endif]-->
-        <style type="text/css">
-            @media all and (min-width: 480px) {
-                .sf-main {
-                    padding: 30px 90px;
-                }
-                .sf-wrapper {
-                    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.06);
-                }
-            }
-        </style>
-        <style type="text/css">
-            @media only screen and (min-width:480px) {
-                .mj-column-per-100 {
-                    width: 100%!important;
-                }
-            }
-        </style>
-    </head>
-
-    <body style="background: #EDF0F2;">
-        <div class="mj-container" style="background-color:#EDF0F2;">
-            <div style="margin:0px auto;max-width:600px;background:#EDF0F2;">
-                <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#EDF0F2;" align="center" border="0">
-                    <tbody>
-                        <tr>
-                            <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:20px 0px;padding-top:30px;">
-                                <div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="margin:0px auto;border-radius:6px;max-width:600px;" class="sf-wrapper">
-                <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;border-radius:6px;background:#fff;" align="center" border="0">
-                    <tbody>
-                        <tr>
-                            <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:20px 0px;">
-                                <div style="margin:0px auto;max-width:600px;" class="sf-main">
-                                    <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" align="center" border="0">
-                                        <tbody>
-                                            <tr>
-                                                <td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:20px 0px;">
-                                                    <div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                                                        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;">
-                                                                        <div style="font-size:1px;line-height:20px;white-space:nowrap;">&nbsp;</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;" align="left">
-                                                                        <div style="cursor:auto;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:25px;font-weight:900;line-height:1.2;text-align:left;">Welcome to INTELLITECH.NG Internship</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;" align="left">
-                                                                        <div style="cursor:auto;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:15px;font-weight:400;line-height:22px;text-align:left;">Hi <span style="font-weight: bold;">' . $firstname . ' ' . $lastname . '</span>,<br> We received below details from you today at ' . $date . '</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;">
-                                                                        <p style="font-size:1px;margin:0px auto;border-top:2px solid #EDF0F2;width:100%;"></p>
-                                                                        <!--[if mso | IE]><table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="font-size:1px;margin:0px auto;border-top:2px solid #EDF0F2;width:100%;" width="600"><tr><td style="height:0;line-height:0;"> </td></tr></table><![endif]-->
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;" align="left">
-                                                                        <div style="cursor:auto;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:15px;font-weight:700;line-height:22px;text-align:left;">Here are your information:</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;" align="left">
-                                                                        <table cellpadding="0" cellspacing="0" style="cellspacing:0px;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;" width="100%" border="0">
-                                                                            <tbody>
-                                                                                <tr style="text-align: left;">
-                                                                                    <th style="color: #949698; font-weight: normal; font-weight: 400; padding-bottom: 12px;">Track</th>
-                                                                                    <td style="padding-bottom: 12px;">' . $track . '</td>
-                                                                                </tr>
-                                                                                <tr style="text-align: left;">
-                                                                                    <th style="color: #949698;  font-weight: normal; font-weight: 400; padding-bottom: 12px;">Level</th>
-                                                                                    <td style="padding-bottom: 12px;">' . $level . '</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;">
-                                                                        <p style="font-size:1px;margin:0px auto;border-top:2px solid #EDF0F2;width:100%;"></p>
-                                                                        <!--[if mso | IE]><table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="font-size:1px;margin:0px auto;border-top:2px solid #EDF0F2;width:100%;" width="600"><tr><td style="height:0;line-height:0;"> </td></tr></table><![endif]-->
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;" align="left">
-                                                                        <div style="cursor:auto;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:15px;font-weight:400;line-height:22px;text-align:left;"><span style="font-style: italic;">Thanks for the bold step taking to change your world.</span><br><span style="font-weight: bold;">The INTELLITECH Team</span></div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <table class="sf-footer" role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" border="0">
-                <tbody>
-                    <tr>
-                        <td>
-                            <div style="margin:0px auto;max-width:600px;">
-                                <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" align="center" border="0">
-                                    <tbody>
-                                        <tr>
-                                            <td style="text-align:center;vertical-align:top;border-top:1px solid #EDF0F2;direction:ltr;font-size:0px;padding:30px;">
-                                                <div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
-                                                    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;padding-bottom:0px;" align="center">
-                                                                    <div style="cursor:auto;color:#3A3D3E;font-family:Lato, Arial, sans-serif;font-size:15px;font-weight:400;line-height:22px;text-align:center;"><span style="font-weight: 900;">Questions?</span><br> send us mail at <a href="mailto:internship@intellitech.ng" style="color:#3587CC; text-decoration: none;" target="_blank">internship@intellitech.ng</a>.</div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;padding-top:30px;" align="center">
-                                                                    <div style="cursor:auto;color:#818585;font-family:Lato, Arial, sans-serif;font-size:12px;font-weight:400;line-height:22px;text-align:center;">1 Dr Peter Odili Road, BY CAC, Trans Amadi, Port Harcourt, Nigeria</div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </body>';
+        $email = mysqli_real_escape_string($conn, trim($_POST['email']));
 
         if (strlen($firstname) < $min) {
             echo "<script>alert('Your First Name cannot be less than {$min} words')</script>";
-        } else {
-            
-            if (strlen($firstname) > $max) {
-                echo "<script>alert('Your First Name cannot be more than {$max} word')</script>";
-            } else {
-                
-                if (strlen($lastname) < $min) {
-                    echo "<script>alert('Your Last Name cannot be less than {$min} words')</script>";
-                } else {
-                    
-                    if (strlen($lastname) > $max) {
-                        echo "<script>alert('Your Last Name cannot be more than {$max} words')</script>";
-                    } else {
-                        
-                        if (Email_exist_intern($email_intern)) {
-                            echo "<script>alert('This Email Address has already been Registered')</script>";
-                        } else {
-                            
-                            if ($firstname == "" || empty($firstname) && $lastname == "" || empty($lastname) && $track == "" || empty($track) && $level == "" || empty($level) && $email_intern == "" || empty($email_intern)) {
-                                echo "<script>alert('All Fields Must be Filled')</script>";
-                            } else {
+        }
+        if (strlen($firstname > $max)) {
+            echo "<script>alert('Your First Name cannot be more than {$max} word')</script>";
+        }
 
-                                $Query = "INSERT INTO intern(firstname, lastname, track, level, date, email)
-                                VALUE('$firstname', '$lastname', '$track', '$level', '$date', '$email_intern')";
-            
-                                $intern_reg = mysqli_query($conn, $Query);
+        if (strlen($lastname) < $min) {
+            echo "<script>alert('Your Last Name cannot be less than {$min} words')</script>";
+        }
+        if (strlen($lastname > $max)) {
+            echo "<script>alert('Your Last Name cannot be more than {$max} words')</script>";
+        }
 
-                                require 'PHPMailerAutoload.php';
+        if (Email_exist_intern($conn, $email)) {
+            $errors[] = "<script>alert('Email Address already existing')</script>";
+        }
 
-                                $mail = new PHPMailer;
-
-                                $mail->SMTPDebug = 1;                               // Enable verbose debug output
-
-                                $mail->isSMTP();                                      // Set mailer to use SMTP
-                                $mail->Host = 'mail.intellitech.ng';  // Specify main and backup SMTP servers
-                                $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                                $mail->Username = 'info@intellitech.ng';                 // SMTP username
-                                $mail->Password = 'Kingofpop@50';                           // SMTP password
-                                $mail->SMTPSecure = 'ssl';
-                                $mail->Mailer = "smtp";                            // Enable TLS encryption, `ssl` also accepted
-                                $mail->SMTPKeepAlive = true;
-                                $mail->Port = 465;                                    // TCP port to connect to
-
-                                $mail->setFrom('no-reply@intellitech.ng', 'INTELLITECH');
-                                $mail->addAddress($email_intern, $firstname . '' . $lastname);     // Add a recipient
-                                //$mail->addAddress('ellen@example.com');               // Name is optional
-                                //$mail->addReplyTo('info@example.com', 'Information');
-                                //$mail->addCC('cc@example.com');
-                                //$mail->addBCC('bcc@example.com');
-
-                                //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-                                //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-                                $mail->isHTML(true);                                  // Set email format to HTML
-
-                                $mail->Subject = 'INTERNSHIP';
-                                $mail->Body    = $forward;
-                                //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-                                if (!$mail->send()) {
-                                    echo "<script>alert('Registration Declined')</script>";
-                                } else {
-                                    echo "<script>alert('Registration Successfully')</script>";
-                                }
-                            }
-                        }
-                    }
-                }
-            } 
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                echo $error;
+            }
         }
     }
 }
@@ -1194,18 +927,21 @@ function View_All_Interns() {
 function sendMail() {
     global $conn;
     if (isset($_POST['sendmail'])) {
-        require('MailUtility.php');
+        include '../lib/phpmailer/MailUtility.php';
         $mail = new MailUtility();
         $to = explode(',', $_POST['recipients']);
-        $subject = $_POST['subject'];
+        $subject = $_POST['recipients'];
         $message = $_POST['message'];
-        $result = $mail->sendMail($to, $subject, $message);
-        if ($result) {
-            $_SESSION['SuccessMessage'] = "Mail Sent";
-            redirect("email");
-        } else {
-            $_SESSION['ErrorMessage'] = "Failed to send mail";
-            redirect("email");
-        }
+        foreach($to as $email){
+            $result = $mail->sendMail($email, $subject, $message);
+            if ($result) {
+                $_SESSION['SuccessMessage'] = "Mail Sent";
+                redirect("email");
+            } else {
+                $_SESSION['ErrorMessage'] = "Failed to send mail";
+                redirect("email");
+            }
+        }        
     }
 }
+?>
