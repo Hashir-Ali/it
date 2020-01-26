@@ -936,12 +936,11 @@ function sendMail() {
             $result = $mail->sendMail($email, $subject, $message);
             if ($result) {
                 $_SESSION['SuccessMessage'] = "Mail Sent";
-                redirect("email");
             } else {
-                $_SESSION['ErrorMessage'] = "Failed to send mail";
-                redirect("email");
+                $_SESSION['ErrorMessage'] = "Failed to send mail";                
             }
-        }        
+        }
+        redirect("email");        
     }
 }
 ?>
