@@ -927,7 +927,11 @@ function View_All_Interns() {
 function sendMail() {
     global $conn;
     if (isset($_POST['sendmail'])) {
+<<<<<<< HEAD
         include '../lib/phpmailer/MailUtility.php';
+=======
+        include 'MailUtility.php';
+>>>>>>> d1ade156428848cb442b8519c21d0e88a5c3d72a
         $mail = new MailUtility();
         $to = explode(',', $_POST['recipients']);
         $subject = $_POST['recipients'];
@@ -936,11 +940,20 @@ function sendMail() {
             $result = $mail->sendMail($email, $subject, $message);
             if ($result) {
                 $_SESSION['SuccessMessage'] = "Mail Sent";
+<<<<<<< HEAD
             } else {
                 $_SESSION['ErrorMessage'] = "Failed to send mail";                
             }
         }
         redirect("email");        
+=======
+                redirect("email");
+            } else {
+                $_SESSION['ErrorMessage'] = "Failed to send mail";
+                redirect("email");
+            }
+        }        
+>>>>>>> d1ade156428848cb442b8519c21d0e88a5c3d72a
     }
 }
 ?>
