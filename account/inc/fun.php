@@ -4,7 +4,8 @@ ob_start();
 session_start();
 
 /// Date and Time
-function Datetime() {
+function Datetime()
+{
     global $conn;
     date_default_timezone_set("Africa/Lagos");
     $CurrentTime = time();
@@ -14,7 +15,8 @@ function Datetime() {
 }
 
 /// Error Message Echo
-function Error_Message() {
+function Error_Message()
+{
     if (isset($_SESSION['ErrorMessage'])) {
         $Output = "<div class='alert alert-danger'>";
         $Output .= htmlentities($_SESSION['ErrorMessage']);
@@ -25,7 +27,8 @@ function Error_Message() {
 }
 
 /// Success Meassage Echo
-function Success_Message() {
+function Success_Message()
+{
     if (isset($_SESSION['SuccessMessage'])) {
         $Output = "<div class='alert alert-success'>";
         $Output .= htmlentities($_SESSION['SuccessMessage']);
@@ -36,13 +39,15 @@ function Success_Message() {
 }
 
 // Redirect Location
-function Redirect($New_Location) {
+function Redirect($New_Location)
+{
     header("Location:" . $New_Location);
     exit;
 }
 
 // Add Category
-function Add_category() {
+function Add_category()
+{
     global $conn;
     if (isset($_POST['submit'])) {
         $title = mysqli_real_escape_string($conn, $_POST['main_title']);
@@ -78,7 +83,8 @@ function Add_category() {
 
 //Categories Table Function
 
-function Table() {
+function Table()
+{
 
     global $conn;
     $query = "SELECT * FROM categories";
@@ -111,7 +117,8 @@ function Table() {
 }
 
 // Add Post
-function AddPost() {
+function AddPost()
+{
     global $conn;
     if (isset($_POST['publish'])) {
 
@@ -149,7 +156,8 @@ function AddPost() {
 }
 
 // ViewPost
-function ViewPost() {
+function ViewPost()
+{
     global $conn;
     $query = "SELECT * FROM categories";
     $categories_query = mysqli_query($conn, $query);
@@ -163,7 +171,8 @@ function ViewPost() {
 }
 
 /// View Post
-function View_All_Post() {
+function View_All_Post()
+{
     global $conn;
     $query = "SELECT * FROM post ORDER BY date DESC";
     $Select_post_query = mysqli_query($conn, $query);
@@ -217,7 +226,7 @@ function View_All_Post() {
         echo "<td>$date</td>";
         echo "<td><a href='../Post?post={$id}' class='btn btn-dark' target='_blank'>View Post</a></td>";
         echo "<td><a href='editpost?edit={$id}' class='btn btn-info'>Edit</a></td>";
-        ?>
+?>
 
         <form action="" method="POST">
             <input type="hidden" name="id" value="<?php echo $id ?>">
@@ -226,7 +235,7 @@ function View_All_Post() {
             ?>
         </form>
 
-        <?php
+<?php
         echo "<td><a href='viewpost?draft={$id}' class='btn btn-secondary'>Draft</a></td>";
         echo "<td><a href='viewpost?publish={$id}' class='btn btn-success'>Published</a></td>";
         echo "</tr>";
@@ -349,7 +358,8 @@ function View_All_Post() {
 }
 
 /// View Comment
-function View_Comment() {
+function View_Comment()
+{
     global $conn;
     $query = "SELECT * FROM comment";
     $Select_post_query = mysqli_query($conn, $query);
@@ -360,8 +370,7 @@ function View_Comment() {
         $date = mysqli_real_escape_string($conn, $row['date']);
         $author = mysqli_real_escape_string($conn, $row['author']);
         $email = mysqli_real_escape_string($conn, $row['email']);
-        $comment = mysqli_real_escape_string($conn, $row['comment']);
-        ;
+        $comment = mysqli_real_escape_string($conn, $row['comment']);;
         $status = mysqli_real_escape_string($conn, $row['status']);
 
         // Comment Table
@@ -433,7 +442,8 @@ function View_Comment() {
 }
 
 /// Comment Page
-function Comment_View() {
+function Comment_View()
+{
     global $conn;
     $query = "SELECT * FROM comment WHERE post =" . mysqli_real_escape_string($conn, $_GET['id']) . "";
     $Select_post_query = mysqli_query($conn, $query);
@@ -444,8 +454,7 @@ function Comment_View() {
         $date = mysqli_real_escape_string($conn, $row['date']);
         $author = mysqli_real_escape_string($conn, $row['author']);
         $email = mysqli_real_escape_string($conn, $row['email']);
-        $comment = mysqli_real_escape_string($conn, $row['comment']);
-        ;
+        $comment = mysqli_real_escape_string($conn, $row['comment']);;
         $status = mysqli_real_escape_string($conn, $row['status']);
 
         // Comment Table
@@ -517,7 +526,8 @@ function Comment_View() {
 }
 
 /// View Category in Blog Page
-function Category() {
+function Category()
+{
     global $conn;
     $query = "SELECT * FROM categories LIMIT 4";
     $categories_query = mysqli_query($conn, $query);
@@ -530,7 +540,8 @@ function Category() {
 }
 
 /// Post Comment to Database
-function Comment_database() {
+function Comment_database()
+{
     global $conn;
     if (isset($_POST['comment'])) {
 
@@ -558,7 +569,8 @@ function Comment_database() {
 }
 
 /// View All Users
-function View_All_User() {
+function View_All_User()
+{
     global $conn;
     $query = "SELECT * FROM users ORDER BY date";
     $Select_post_query = mysqli_query($conn, $query);
@@ -631,7 +643,8 @@ function View_All_User() {
 }
 
 // Add Users
-function AddUser() {
+function AddUser()
+{
     global $conn;
     if (isset($_POST['adduser'])) {
 
@@ -679,7 +692,8 @@ function AddUser() {
 
 // View User Role
 
-function ViewRole() {
+function ViewRole()
+{
     global $conn;
     $query = "SELECT * FROM users";
     $select_users = mysqli_query($conn, $query);
@@ -693,7 +707,8 @@ function ViewRole() {
 }
 
 /// Login 
-function Admin_Login() {
+function Admin_Login()
+{
     global $conn;
     if (isset($_GET['login'])) {
         $username = mysqli_real_escape_string($conn, $_GET['username']);
@@ -733,7 +748,8 @@ function Admin_Login() {
     }
 }
 
-function Check_Admin() {
+function Check_Admin()
+{
     global $conn;
     if (isset($_SESSION['role'])) {
         if ($_SESSION['role'] !== 'Admin' && $_SESSION['role'] !== 'Subscriber') {
@@ -746,7 +762,8 @@ function Check_Admin() {
     }
 }
 
-function Username_exist($username) {
+function Username_exist($username)
+{
     global $conn;
     $Query = "SELECT username FROM users WHERE username = '$username' ";
     $Exist = mysqli_query($conn, $Query);
@@ -758,7 +775,8 @@ function Username_exist($username) {
     }
 }
 
-function Reg_User() {
+function Reg_User()
+{
     global $conn;
     if (isset($_POST['reguser'])) {
         $firstname = mysqli_real_escape_string($conn, trim($_POST['firstname']));
@@ -805,7 +823,8 @@ function Reg_User() {
     }
 }
 
-function Contact() {
+function Contact()
+{
     global $conn;
     if (isset($_POST['contact'])) {
         $to = 'configureall@gmail.com';
@@ -820,7 +839,8 @@ function Contact() {
     }
 }
 
-function is_admin($user) {
+function is_admin($user)
+{
     global $conn;
     $Query = "SELECT role FROM users WHERE username = '$user' ";
     $send = mysqli_query($conn, $Query);
@@ -834,7 +854,8 @@ function is_admin($user) {
     }
 }
 
-function Email_exist($email) {
+function Email_exist($email)
+{
     global $conn;
     $Query = "SELECT email FROM intern WHERE email = '$email' ";
     $Exist = mysqli_query($conn, $Query);
@@ -846,7 +867,8 @@ function Email_exist($email) {
     }
 }
 
-function Email_exist_intern($conn, $email) {
+function Email_exist_intern($conn, $email)
+{
     $Query = "SELECT id FROM users WHERE email = '$email' ";
     $Exist = mysqli_query($conn, $Query);
 
@@ -857,7 +879,8 @@ function Email_exist_intern($conn, $email) {
     }
 }
 
-function validate_intern($conn) {
+function validate_intern($conn)
+{
     $errors = [];
     $min = 3;
     $max = 20;
@@ -895,7 +918,8 @@ function validate_intern($conn) {
     }
 }
 
-function View_All_Interns() {
+function View_All_Interns()
+{
     global $conn;
     $query = "SELECT * FROM intern ORDER BY date";
     $Select_post_query = mysqli_query($conn, $query);
@@ -924,7 +948,8 @@ function View_All_Interns() {
 }
 
 //send mail
-function sendMail() {
+function sendMail()
+{
     global $conn;
     if (isset($_POST['sendmail'])) {
         include 'MailUtility.php';
@@ -932,13 +957,21 @@ function sendMail() {
         $to = explode(',', $_POST['recipients']);
         $subject = $_POST['recipients'];
         $message = $_POST['message'];
-        foreach($to as $email){
+        $response = [];
+        $failed = [];
+        foreach ($to as $email) {
             $result = $mail->sendMail($email, $subject, $message);
             if ($result) {
-                $_SESSION['SuccessMessage'] = "Mail Sent";
+                $response[] = 1;
             } else {
-                $_SESSION['ErrorMessage'] = "Failed to send mail";                
+                $response[] = 0;
+                $failed[] = $to;
             }
+        }
+        if (in_array(0, $response)) {
+            $_SESSION['ErrorMessage'] = "Failed to send mail:".json_encode($failed);
+        } else {
+            $_SESSION['SuccessMessage'] = "Mail Sent";
         }
         redirect("email");
     }

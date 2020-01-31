@@ -21,15 +21,8 @@ class MailUtility {
         //$this->mail->AddReplyTo("configureall@gmail.com", "INTELLITECH");
     }
 
-    function sendMail($toList, $subject, $message) {
-        if(is_array($toList)){
-            foreach ($toList as $to) {
-                $this->mail->AddAddress($to);
-            }
-        }else{
-            $this->mail->AddAddress($toList);
-        }
-        
+    function sendMail($to, $subject, $message) {
+        $this->mail->AddAddress($to);        
         $this->mail->Subject = $subject;
         $this->mail->WordWrap = 80;
         $this->mail->MsgHTML($message);
