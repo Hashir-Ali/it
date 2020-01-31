@@ -955,7 +955,7 @@ function sendMail()
         include 'MailUtility.php';
         $mail = new MailUtility();
         $to = explode(',', $_POST['recipients']);
-        $subject = $_POST['recipients'];
+        $subject = $_POST['subject'];
         $message = $_POST['message'];
         $response = [];
         $failed = [];
