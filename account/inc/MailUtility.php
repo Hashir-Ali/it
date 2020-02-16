@@ -12,7 +12,7 @@ class MailUtility {
         $this->mail->SMTPDebug = 0;
         $this->mail->SMTPAuth = TRUE;
         $this->mail->SMTPSecure = "ssl";
-        $this->mail->SMTPKeepAlive = true;
+        $this->SMTPKeepAlive = true;
         $this->mail->Port = 465;
         $this->mail->Username = "bright.robert@intellitech.ng";
         $this->mail->Password = "########";
@@ -25,20 +25,34 @@ class MailUtility {
     function sendMail($toList, $subject, $message) {
         if(is_array($toList)){
             foreach ($toList as $to) {
+
                 $this->mail->AddAddress($to);
+                $this->mail->Subject = $subject;
+                $this->mail->WordWrap = 80;
+                $this->mail->MsgHTML($message);
+                $this->mail->IsHTML(true);
+
+                if (!$this->mail->Send())
+                {
+                  echo "Couldn't send to {$to}\n";
+                }else {
+                  echo "sent Successfuly to {$to}\n";
+                }
             }
         }else{
             $this->mail->AddAddress($toList);
+            $this->mail->Subject = $subject;
+            $this->mail->WordWrap = 80;
+            $this->mail->MsgHTML($message);
+            $this->mail->IsHTML(true);
+            if (!$this->mail->Send()){
+              echo "sent successfuly to {$to}\n";
+            }else{
+              echo "Couldn't send to {$to}\n"
+            }
         }
 
-        $this->mail->Subject = $subject;
-        $this->mail->WordWrap = 80;
-        $this->mail->MsgHTML($message);
-        $this->mail->IsHTML(true);
-        if (!$this->mail->Send())
-            return FALSE;
-        else
-            return TRUE;;
+        return TRUE;;
     }
 
 }
