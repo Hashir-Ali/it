@@ -29,7 +29,7 @@ class MailUtility {
         }else{
             $this->mail->AddAddress($toList);
         }
-        
+
         $this->mail->Subject = $subject;
         $this->mail->WordWrap = 80;
         $this->mail->MsgHTML($message);
